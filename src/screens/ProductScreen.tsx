@@ -21,7 +21,7 @@ export const ProductScreen = ( { route, navigation }: Props ) => {
 
     const { categories, isLoading } = useCategories();
 
-    const { loadProductById, addProduct, updateProduct, deleteProduct } = useContext( ProductsContext );
+    const { loadProductById, addProduct, updateProduct, deleteProduct, uploadImage } = useContext( ProductsContext );
 
     const { _id, categoryId, fullName, img, form, onChange, setFormValue } = useForm({
         _id: id,
@@ -101,6 +101,23 @@ export const ProductScreen = ( { route, navigation }: Props ) => {
         if ( responseObj.assets && !responseObj.assets[0].uri ) return;
 
         setTempImgUri( responseObj.assets![0].uri );
+
+        uploadImage( responseObj , _id)
+        
+    }
+
+    const takePhotoFromGallery = async () => {
+        const responseObj = await launchImageLibrary({
+            mediaType: 'photo',
+            quality: 0.5
+        });
+        
+        if ( responseObj.didCancel ) return;
+        if ( responseObj.assets && !responseObj.assets[0].uri ) return;
+
+        setTempImgUri( responseObj.assets![0].uri );
+
+        uploadImage( responseObj , _id)
         
     }
 
@@ -154,8 +171,8 @@ export const ProductScreen = ( { route, navigation }: Props ) => {
                             <View style={{ width: 10 }} />
 
                             <Button
-                                title='Galery'
-                                onPress={ () => {} }
+                                title='Gallery'
+                                onPress={ takePhotoFromGallery }
                                 color='#5856D6'
                             />
 

@@ -119,7 +119,7 @@ export const AuthProvider = ( { children }: AuthProviderProps ) => {
 
             //console.log( err.response?.data );
             const data =  err.response?.data;
-            console.log({ data });
+            console.log({ err });
         }
     };
 
