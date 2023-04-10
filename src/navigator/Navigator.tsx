@@ -6,13 +6,15 @@ import { LoginScreen } from '../screens/LoginScreen';
 import { RegisterScreen } from '../screens/RegisterScreen';
 import { ProtectedScreen } from '../screens/ProtectedScreen';
 import { LoadingScreen } from '../screens/LoadingScreen';
+import { ProductsNavigator } from './ProductsNavigator';
 
 
 //? Defines the parameters that the screens receive
 export type RootStackParams = {
-  LoginScreen: undefined;
-  RegisterScreen: undefined;
-  ProtectedScreen: undefined;
+	LoginScreen: undefined;
+	RegisterScreen: undefined;
+	//ProtectedScreen: undefined;
+	ProductsNavigator: undefined;
 }
 
 const Stack = createStackNavigator<RootStackParams>();
@@ -41,7 +43,8 @@ export const Navigator = () => {
 					</>
 				)
 				: (
-					<Stack.Screen name="ProtectedScreen" component={ ProtectedScreen } />
+					// <Stack.Screen name="ProtectedScreen" component={ ProtectedScreen } />
+					<Stack.Screen name="ProductsNavigator" component={ ProductsNavigator } />
 				)
 			}
 		</Stack.Navigator>

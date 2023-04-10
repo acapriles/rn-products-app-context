@@ -5,7 +5,10 @@ import { getData } from "../helpers/storage";
 
 const baseURL = 'http://192.168.1.124:8080/api';
 
-const cafeApi = axios.create({ baseURL });
+const cafeApi = axios.create({
+    baseURL,
+    timeout: 5000, // 5 seconds
+});
 
 // Middleware
 cafeApi.interceptors.request.use(

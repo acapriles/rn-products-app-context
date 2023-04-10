@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 export const useForm = <T extends Object>( initState: T ) => {
     
-    const [state, setState] = useState( initState );
+    const [ state, setState ] = useState( initState );
 
     const onChange = ( value: string, field: keyof T ) => {
         setState({
@@ -11,9 +11,20 @@ export const useForm = <T extends Object>( initState: T ) => {
         });
     }
 
+    const setFormValue = ( form: T ) => {
+        setState({
+            ...state,
+            ...form
+        })
+    }
+
     return {
+        // Properties
         ...state,
         form: state,
+
+        // Methods
         onChange,
+        setFormValue
     }
 }

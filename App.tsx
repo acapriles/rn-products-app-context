@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Navigator } from './src/navigator/Navigator';
 import { FC } from 'react';
 import { AuthProvider } from './src/context/AuthContext';
+import { ProductsProvider } from './src/context/ProductsContext';
 
 
 interface Props {
@@ -13,7 +14,9 @@ interface Props {
 const AppState = ( { children }: Props ) => {
 	return (
 		<AuthProvider>
-			{ children }
+			<ProductsProvider>
+				{ children }
+			</ProductsProvider>
 		</AuthProvider>
 	)
 }
