@@ -1,7 +1,9 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Button, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
-import {Picker} from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+
 
 import { ProductsStackParams } from '../navigator/ProductsNavigator';
 import { useCategories } from '../hooks/useCategories';
@@ -14,6 +16,8 @@ interface Props extends StackScreenProps<ProductsStackParams, 'ProductScreen'>{}
 export const ProductScreen = ( { route, navigation }: Props ) => {
 
     const { id = '', name = '' } = route.params;
+
+    const [ tempImgUri, setTempImgUri ] = useState<string>();
 
     const { categories, isLoading } = useCategories();
 
@@ -87,6 +91,19 @@ export const ProductScreen = ( { route, navigation }: Props ) => {
         }
     }
 
+    const takePhoto = async () => {
+        const responseObj = await launchCamera({
+            mediaType: 'photo',
+            quality: 0.5
+        });
+        
+        if ( responseObj.didCancel ) return;
+        if ( responseObj.assets && !responseObj.assets[0].uri ) return;
+
+        setTempImgUri( responseObj.assets![0].uri );
+        
+    }
+
 
     return (
         <View style={ styles.container }>
@@ -130,7 +147,7 @@ export const ProductScreen = ( { route, navigation }: Props ) => {
                         >
                             <Button
                                 title='Camera'
-                                onPress={ () => {} }
+                                onPress={ takePhoto }
                                 color='#5856D6'
                             />
 
@@ -148,9 +165,23 @@ export const ProductScreen = ( { route, navigation }: Props ) => {
 
                 
                 {
-                    ( img.length > 0 ) && (
+                    ( img.length > 0 && !tempImgUri ) && (
                         <Image
                             source={{ uri: img }}
+                            style={{
+                                width: '100%',
+                                height: 300,
+                                marginTop: 20
+                            }}
+                        />
+                    )
+                }
+
+                {/* Show temporal image */}
+                {
+                    ( tempImgUri ) && (
+                        <Image
+                            source={{ uri: tempImgUri }}
                             style={{
                                 width: '100%',
                                 height: 300,
